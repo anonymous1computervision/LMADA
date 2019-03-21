@@ -5,6 +5,9 @@ import os
 
 import tensorflow as tf
 
+from models.model import lmada
+from trains.train import train
+
 PATH = '/home/omega/mycodes/LMADA/results'
 
 # Define flag arguments
@@ -39,6 +42,8 @@ def main(_):
     # Define GPU configuration
     os.environ['CUDA_DEVICE_ORDER'] = 'PCI_BUS_ID'
     os.environ['CUDA_VISIBLE_DEVICES'] = FLAGS.gpu
+    gpu_config = tf.ConfigProto()
+    gpu_config.gpu_options.allow_growth = True
 
     # Define model name
     setup_list = [
@@ -47,8 +52,21 @@ def main(_):
         f"nn={FLAGS.nn}",
         f"ls={FLAGS.lr}"
     ]
-    model_name = '_'.join(setup_list)
+    model_name = '___'.join(setup_list)
     print(model_name)
+
+    # TODO: Should consider tensorboard using 'train_writer'
+    """
+    if FLAGS.log:
+        tf.logging.set_verbosity('INFO')
+    """
+
+    # TODO: Loading pretrained model or saved model
+
+    M = lmada(FLAGS, gpu_config)
+    M.sess.run(tf.global_variables_initializer())
+
+    train(M, FLAGS)
 
 
 if __name__ == '__main__':
