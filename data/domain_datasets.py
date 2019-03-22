@@ -21,9 +21,9 @@ _CONFIG = None
 def get_config():
     global _CONFIG
     if _CONFIG is None:
-        if os.path.exists('domain_datasets.cfg'):
+        if os.path.exists('data/domain_datasets.cfg'):
             _CONFIG = RawConfigParser()
-            _CONFIG.read('domain_datasets.cfg')
+            _CONFIG.read('data/domain_datasets.cfg')
         else:
             raise ValueError('Could not find configuration file domain_datasets.cfg')
     return _CONFIG

@@ -1,19 +1,19 @@
 """
 Original Code
 https://github.com/Britefury/self-ensemble-visual-domain-adapt/domain_datasets.py
-modified by Jaeyoon Yoo and Changhwa Park.
+modified by Changhwa Park and Jaeyoon Yoo.
 """
 
 import glob
 import pickle as pkl
 
-import domain_datasets
-import numpy as np
 import skimage.io
 import skimage.transform
-from batchup.datasets import mnist, fashion_mnist, cifar10, svhn, stl, usps
-from mnistm import create_mnistm
+from batchup.datasets import mnist, fashion_mnist, cifar10, stl, usps
 from skimage.transform import downscale_local_mean, resize
+
+from .domain_datasets import *
+from .mnistm import create_mnistm
 
 
 def rgb2grey_tensor(X):
@@ -21,26 +21,20 @@ def rgb2grey_tensor(X):
 
 
 # Dataset loading functions
-def load_mnistm(datadir, normalize=False):
+def load_mnistm(datadir, val=False, zero_centre=False):
     mnistm_fname = os.path.join(datadir, 'mnistm.pkl')
-    if os.path.isfile(mnistm_fname):
-        with open(mnistm_fname, 'rb') as f:
-            x = pkl.load(f)
-        return x['train'], x['test'], x['valid']
-    else:
+    if not os.path.isfile(mnistm_fname):
         bsds = 'BSDS500'
         bsds = os.path.join(datadir, bsds)
         if not os.path.isfile(bsds):
             print('BSDS downloads....')
-            os.system('git clone https://github.com/BIDS/BSDS500.git' + bsds)
+            os.system('git clone https://github.com/BIDS/BSDS500.git ' + bsds)
 
         d_mnist = mnist.MNIST(n_val=0)
         d_mnist.train_X = d_mnist.train_X[:]
         d_mnist.test_X = d_mnist.test_X[:]
-        d_mnist.val_X = d_mnist.val_X[:]
         d_mnist.train_y = d_mnist.train_y[:]
         d_mnist.test_y = d_mnist.test_y[:]
-        d_mnist.val_y = d_mnist.val_y[:]
 
         recur_names = []
         for filename in glob.iglob(os.path.join(datadir, '**', '*'), recursive=True):
@@ -77,7 +71,23 @@ def load_mnistm(datadir, normalize=False):
                       },
                      f,
                      pkl.HIGHEST_PROTOCOL)
-        return [train, d_mnist.train_y], [test, d_mnist.test_y], [valid, d_mnist.val_y]
+
+    with open(mnistm_fname, 'rb') as f:
+        x = pkl.load(f)
+
+    x['train'][0] = x['train'][0].astype('float32') / 255.
+    x['test'][0] = x['test'][0].astype('float32') / 255.
+
+    if zero_centre:
+        x['train'][0] = x['train'][0] * 2.0 - 1.0
+        x['test'][0] = x['test'][0] * 2.0 - 1.0
+
+    if val:
+        mnistm_val = [x['train'][0][:10000], x['train'][1][:10000]]
+        mnistm_train = [x['train'][0][10000:], x['train'][1][10000:]]
+        return mnistm_train, x['test'], mnistm_val
+    else:
+        return x['train'], x['test'], x['valid']
 
 
 def load_svhn(zero_centre=False, greyscale=False, val=False, extra=False):
@@ -446,9 +456,9 @@ def load_syn_digits(zero_centre=False, greyscale=False, val=False):
 
     print('Loading Syn-digits...')
     if val:
-        d_synd = domain_datasets.SynDigits(n_val=10000)
+        d_synd = SynDigits(n_val=10000)
     else:
-        d_synd = domain_datasets.SynDigits(n_val=0)
+        d_synd = SynDigits(n_val=0)
 
     d_synd.train_X = d_synd.train_X[:]
     d_synd.val_X = d_synd.val_X[:]
@@ -488,9 +498,9 @@ def load_syn_signs(zero_centre=False, greyscale=False, val=False):
 
     print('Loading Syn-signs...')
     if val:
-        d_syns = domain_datasets.SynSigns(n_val=10000, n_test=10000)
+        d_syns = SynSigns(n_val=10000, n_test=10000)
     else:
-        d_syns = domain_datasets.SynSigns(n_val=0, n_test=10000)
+        d_syns = SynSigns(n_val=0, n_test=10000)
 
     d_syns.train_X = d_syns.train_X[:]
     d_syns.val_X = d_syns.val_X[:]
@@ -531,9 +541,9 @@ def load_gtsrb(zero_centre=False, greyscale=False, val=False):
 
     print('Loading GTSRB...')
     if val:
-        d_gts = domain_datasets.GTSRB(n_val=10000)
+        d_gts = GTSRB(n_val=10000)
     else:
-        d_gts = domain_datasets.GTSRB(n_val=0)
+        d_gts = GTSRB(n_val=0)
 
     d_gts.train_X = d_gts.train_X[:]
     d_gts.val_X = d_gts.val_X[:]
