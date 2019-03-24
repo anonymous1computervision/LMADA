@@ -34,6 +34,10 @@ class usps(object):
         test_x = usps_data.test_X
         val_x = usps_data.val_X
 
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
+
         train_y = np.eye(10)[usps_data.train_y.reshape(-1)]
         test_y = np.eye(10)[usps_data.test_y.reshape(-1)]
         val_y = np.eye(10)[usps_data.val_y.reshape(-1)]
@@ -54,6 +58,10 @@ class mnist(object):
         train_x = mnist_data.train_X
         test_x = mnist_data.test_X
         val_x = mnist_data.val_X
+
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
 
         train_y = np.eye(10)[mnist_data.train_y.reshape(-1)]
         test_y = np.eye(10)[mnist_data.test_y.reshape(-1)]
@@ -77,11 +85,11 @@ class mnistm(object):
         test_y = test[1]
         val_x = val[0]
         val_y = val[1]
-
+        """
         train_x = np.transpose(train_x, (0, 3, 1, 2))
         test_x = np.transpose(test_x, (0, 3, 1, 2))
         val_x = np.transpose(val_x, (0, 3, 1, 2))
-
+        """
         train_y = np.eye(10)[train_y.reshape(-1)]
         test_y = np.eye(10)[test_y.reshape(-1)]
         val_y = np.eye(10)[val_y.reshape(-1)]
@@ -102,6 +110,10 @@ class svhn(object):
         train_x = svhn_data.train_X
         test_x = svhn_data.test_X
         val_x = svhn_data.val_X
+
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
 
         train_y = np.eye(10)[svhn_data.train_y.reshape(-1)]
         test_y = np.eye(10)[svhn_data.test_y.reshape(-1)]
@@ -124,6 +136,10 @@ class syndigits(object):
         test_x = syndigits_data.test_X
         val_x = syndigits_data.val_X
 
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
+
         train_y = np.eye(10)[syndigits_data.train_y.reshape(-1)]
         test_y = np.eye(10)[syndigits_data.test_y.reshape(-1)]
         val_y = np.eye(10)[syndigits_data.val_y.reshape(-1)]
@@ -144,6 +160,10 @@ class cifar(object):
         train_x = cifar_data.train_X
         test_x = cifar_data.test_X
         val_x = cifar_data.val_X
+
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
 
         train_y = np.eye(9)[cifar_data.train_y.reshape(-1)]
         test_y = np.eye(9)[cifar_data.test_y.reshape(-1)]
@@ -166,6 +186,10 @@ class stl(object):
         test_x = stl_data.test_X
         val_x = stl_data.val_X
 
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
+
         train_y = np.eye(9)[stl_data.train_y.reshape(-1)]
         test_y = np.eye(9)[stl_data.test_y.reshape(-1)]
         val_y = np.eye(9)[stl_data.val_y.reshape(-1)]
@@ -186,6 +210,10 @@ class gtsrb(object):
         train_x = gtsrb_data.train_X
         test_x = gtsrb_data.test_X
         val_x = gtsrb_data.val_X
+
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
 
         train_y = np.eye(43)[gtsrb_data.train_y.reshape(-1)]
         test_y = np.eye(43)[gtsrb_data.test_y.reshape(-1)]
@@ -208,6 +236,10 @@ class synsigns(object):
         test_x = synsigns_data.test_X
         val_x = synsigns_data.val_X
 
+        train_x = np.transpose(train_x, (0, 2, 3, 1)).astype(np.float32)
+        test_x = np.transpose(test_x, (0, 2, 3, 1)).astype(np.float32)
+        val_x = np.transpose(val_x, (0, 2, 3, 1)).astype(np.float32)
+
         train_y = np.eye(43)[synsigns_data.train_y.reshape(-1)]
         test_y = np.eye(43)[synsigns_data.test_y.reshape(-1)]
         val_y = np.eye(43)[synsigns_data.val_y.reshape(-1)]
@@ -223,7 +255,7 @@ class synsigns(object):
 
 # TODO: Should implement office dataset; amazon, webcam, dslr
 
-def get_attr(data, source, target):
+def get_attr(source, target):
     # Processed_attr: [processed size, processed channels, number of classes]
     processed_attr = {
         'usps'     : [28, 1, 10],

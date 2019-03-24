@@ -1,7 +1,7 @@
 """
 Original Code
 https://github.com/Britefury/self-ensemble-visual-domain-adapt/domain_datasets.py
-modified by Changhwa Park and Jaeyoon Yoo.
+Modified by Changhwa Park and Jaeyoon Yoo.
 """
 
 import glob

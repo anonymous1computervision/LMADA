@@ -1,6 +1,5 @@
 # Local Manifold Adversarial Domain Adaptation
 
-# Import required packages
 import os
 
 import tensorflow as tf
@@ -30,6 +29,7 @@ flags.DEFINE_float('dp', 0.5, 'Dropout keep probability')
 flags.DEFINE_integer('iter', 100000, 'Maximum iteration')
 flags.DEFINE_integer('bs', 128, 'Batch size')
 flags.DEFINE_boolean('zc', False, 'Zero centering of data')
+flags.DEFINE_boolean('inorm', False, 'Instance normalization')
 
 ## Load previously trained session
 flags.DEFINE_boolean('load', False, 'Determines whether to load previous checkpoint or not')
@@ -53,7 +53,8 @@ def main(_):
         f"src={FLAGS.src}",
         f"trg={FLAGS.trg}",
         f"nn={FLAGS.nn}",
-        f"lr={FLAGS.lr}"
+        f"lr={FLAGS.lr}",
+        f"zc={FLAGS.zc}"
     ]
     model_name = '___'.join(setup_list)
     print(model_name)
@@ -69,7 +70,7 @@ def main(_):
     M = lmada(FLAGS, gpu_config)
     M.sess.run(tf.global_variables_initializer())
 
-    train(M, FLAGS)
+    train(M, FLAGS, model_name)
 
 
 if __name__ == '__main__':
